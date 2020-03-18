@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace CapstoneAPI.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ActivityController : ControllerBase
     {
         private readonly IRepositoryWrapper _repo;
@@ -17,7 +19,6 @@ namespace CapstoneAPI.Controllers
             _repo = repo;
         }
 
-        //GET: api/School
         [HttpGet]
         public IEnumerable<Activity> Get()
         {

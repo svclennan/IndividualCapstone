@@ -72,11 +72,5 @@ namespace CapstoneAPI.Controllers
             _repo.MoodTrackers.Delete(moodTracker);
             _repo.Save();
         }
-
-        // GET: api/School
-        //[HttpGet]
-        //public string Get()
-        //{
-        //}
     }
 }
