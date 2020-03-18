@@ -9,6 +9,8 @@ namespace Repository.Contracts
     {
         MoodTracker GetMoodTracker(int moodTrackerId);
 
+        MoodTracker GetMoodTrackerByUserId(string userId);
+
         void CreateMoodTracker(MoodTracker newMoodTracker);
 
         MoodTracker GetMoodTrackerIncludeAll(int moodTrackerId);

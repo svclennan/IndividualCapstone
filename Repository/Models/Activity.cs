@@ -9,6 +9,7 @@ namespace Repository.Models
     {
         [Key]
         public int ActivityId { get; set; }
+
         public string Name { get; set; }
     }
 }

@@ -10,8 +10,11 @@ namespace Repository.Models
     {
         [Key]
         public int PlaylistRatingId { get; set; }
+
         public string PlaylistUrl { get; set; }
+
         public bool Rating { get; set; }
+
 
         [ForeignKey("MoodTracker")]
         public int MoodTrackerId { get; set; }

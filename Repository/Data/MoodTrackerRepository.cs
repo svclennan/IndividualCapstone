@@ -23,11 +23,16 @@ namespace Repository.Data
             throw new NotImplementedException();
         }
 
-        public MoodTracker GetMoodTrackerIncludeAll(int moodTrackerId)
+        public MoodTracker GetMoodTrackerByUserId(string userId)
         {
             throw new NotImplementedException();
         }
 
+        public MoodTracker GetMoodTrackerIncludeAll(int moodTrackerId)
+        {
+            throw new NotImplementedException();
+        }
+        //include all things
         public List<MoodTracker> GetMoodTrackers()
         {
             throw new NotImplementedException();
