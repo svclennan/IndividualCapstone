@@ -12,6 +12,10 @@ using Capstone.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Capstone.Services;
+using Capstone.Contracts;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace Capstone
 {
@@ -27,12 +31,20 @@ namespace Capstone
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IDatabaseService, DatabaseService>();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped<ClaimsPrincipal>(s =>
+                s.GetService<IHttpContextAccessor>().HttpContext.User);
+
             services.AddControllersWithViews();
+
             services.AddRazorPages();
         }
 
@@ -47,14 +59,12 @@ namespace Capstone
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
