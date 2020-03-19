@@ -40,10 +40,11 @@ namespace Capstone.Services
 
             HttpResponseMessage response = await client.PostAsync(url, data);
         }
-
+        
         public async Task AddMoodTrackerAsync(MoodTracker moodTracker)
         {
             string url = _config.GetValue<string>("ApiHostUrl:BaseUrl");
+            //string url = "https://localhost:44338/";
             url += "api/MoodTracker";
             var json = JsonConvert.SerializeObject(moodTracker);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
