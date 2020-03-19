@@ -17,16 +17,16 @@ namespace Repository.Data
 
         public void CreateMood(Mood newMood)
         {
-            throw new NotImplementedException();
+            Create(newMood);
         }
         public Mood GetMood(int moodId)
         {
-            throw new NotImplementedException();
+            return FindByCondition(a => a.MoodId == moodId).FirstOrDefault();
         }
 
         public List<Mood> GetMoods()
         {
-            throw new NotImplementedException();
+            return FindAll().ToList();
         }
     }
 }

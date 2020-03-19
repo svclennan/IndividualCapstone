@@ -39,7 +39,7 @@ namespace CapstoneAPI.Controllers
                 Date = mood.Date,
                 MoodRating = mood.MoodRating,
                 Note = mood.Note,
-                MoodTrackerId = mood.MoodTrackerId
+                MoodId = mood.MoodId
             };
             _repo.Moods.CreateMood(newMood);
             _repo.Save();
@@ -52,7 +52,7 @@ namespace CapstoneAPI.Controllers
             moodToEdit.Date = mood.Date;
             moodToEdit.MoodRating = mood.MoodRating;
             moodToEdit.Note = mood.Note;
-            moodToEdit.MoodTrackerId = mood.MoodTrackerId;
+            moodToEdit.MoodId = mood.MoodId;
             _repo.Moods.Update(moodToEdit);
             _repo.Save();
         }

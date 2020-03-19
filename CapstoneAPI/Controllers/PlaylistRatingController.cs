@@ -37,7 +37,7 @@ namespace CapstoneAPI.Controllers
             {
                 PlaylistUrl = playlistRating.PlaylistUrl,
                 Rating = playlistRating.Rating,
-                MoodTrackerId = playlistRating.MoodTrackerId
+                PlaylistRatingId = playlistRating.PlaylistRatingId
             };
             _repo.PlaylistRatings.CreatePlaylistRating(newPlayListRating);
             _repo.Save();
@@ -48,7 +48,7 @@ namespace CapstoneAPI.Controllers
         {
             var ratingToEdit = _repo.PlaylistRatings.GetPlaylistRating(playlistRating.PlaylistRatingId);
             ratingToEdit.PlaylistUrl = playlistRating.PlaylistUrl;
-            ratingToEdit.MoodTrackerId = playlistRating.MoodTrackerId;
+            ratingToEdit.PlaylistRatingId = playlistRating.PlaylistRatingId;
             ratingToEdit.Rating = playlistRating.Rating;
             _repo.PlaylistRatings.Update(ratingToEdit);
             _repo.Save();

@@ -35,7 +35,7 @@ namespace CapstoneAPI.Controllers
         [HttpGet("{id:int}")]
         public MoodTracker Get(int id)
         {
-            return _repo.MoodTrackers.GetMoodTrackerIncludeAll(id);
+            return _repo.MoodTrackers.GetMoodTracker(id);
         }
 
         [HttpPost]

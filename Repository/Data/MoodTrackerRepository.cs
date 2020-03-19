@@ -1,7 +1,9 @@
-﻿using Repository.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Contracts;
 using Repository.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Repository.Data
@@ -15,27 +17,23 @@ namespace Repository.Data
         
         public void CreateMoodTracker(MoodTracker newMoodTracker)
         {
-            throw new NotImplementedException();
+            Create(newMoodTracker);
         }
 
         public MoodTracker GetMoodTracker(int moodTrackerId)
         {
-            throw new NotImplementedException();
+            return FindByCondition(a => a.MoodTrackerId == moodTrackerId).Include(a=> a.Mood).Include(a=> a.PlaylistRating).FirstOrDefault();
         }
 
         public MoodTracker GetMoodTrackerByUserId(string userId)
         {
-            throw new NotImplementedException();
+            return FindByCondition(a => a.UserId == userId).Include(a => a.Mood).Include(a => a.PlaylistRating).FirstOrDefault();
         }
 
-        public MoodTracker GetMoodTrackerIncludeAll(int moodTrackerId)
-        {
-            throw new NotImplementedException();
-        }
         //include all things
         public List<MoodTracker> GetMoodTrackers()
         {
-            throw new NotImplementedException();
+            return FindAll().Include(a => a.Mood).Include(a => a.PlaylistRating).ToList();
         }
     }
 }

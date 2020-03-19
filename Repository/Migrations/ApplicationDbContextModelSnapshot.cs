@@ -55,7 +55,8 @@ namespace Repository.Migrations
 
                     b.HasKey("MoodId");
 
-                    b.HasIndex("MoodTrackerId");
+                    b.HasIndex("MoodTrackerId")
+                        .IsUnique();
 
                     b.ToTable("Moods");
                 });
@@ -74,6 +75,9 @@ namespace Repository.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
@@ -102,7 +106,8 @@ namespace Repository.Migrations
 
                     b.HasKey("PlaylistRatingId");
 
-                    b.HasIndex("MoodTrackerId");
+                    b.HasIndex("MoodTrackerId")
+                        .IsUnique();
 
                     b.ToTable("PlaylistRatings");
                 });
@@ -110,8 +115,8 @@ namespace Repository.Migrations
             modelBuilder.Entity("Repository.Models.Mood", b =>
                 {
                     b.HasOne("Repository.Models.MoodTracker", "MoodTracker")
-                        .WithMany()
-                        .HasForeignKey("MoodTrackerId")
+                        .WithOne("Mood")
+                        .HasForeignKey("Repository.Models.Mood", "MoodTrackerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -119,8 +124,8 @@ namespace Repository.Migrations
             modelBuilder.Entity("Repository.Models.PlaylistRating", b =>
                 {
                     b.HasOne("Repository.Models.MoodTracker", "MoodTracker")
-                        .WithMany()
-                        .HasForeignKey("MoodTrackerId")
+                        .WithOne("PlaylistRating")
+                        .HasForeignKey("Repository.Models.PlaylistRating", "MoodTrackerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

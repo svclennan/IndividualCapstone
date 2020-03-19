@@ -2,6 +2,7 @@
 using Repository.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Repository.Data
@@ -14,17 +15,17 @@ namespace Repository.Data
 
         public void CreatePlaylistRating(PlaylistRating newPlaylistRating)
         {
-            throw new NotImplementedException();
+            Create(newPlaylistRating);
         }
 
         public PlaylistRating GetPlaylistRating(int playlistRatingId)
         {
-            throw new NotImplementedException();
+            return FindByCondition(a => a.PlaylistRatingId == playlistRatingId).FirstOrDefault();
         }
 
         public List<PlaylistRating> GetPlaylistRatings()
         {
-            throw new NotImplementedException();
+            return FindAll().ToList();
         }
     }
 }

@@ -13,8 +13,6 @@ namespace Repository.Contracts
 
         void CreateMoodTracker(MoodTracker newMoodTracker);
 
-        MoodTracker GetMoodTrackerIncludeAll(int moodTrackerId);
-
         List<MoodTracker> GetMoodTrackers();
     }
 }

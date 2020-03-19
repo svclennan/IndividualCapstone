@@ -2,6 +2,7 @@
 using Repository.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Repository.Data
@@ -15,17 +16,17 @@ namespace Repository.Data
 
         public void CreateActivity(Activity newActivity)
         {
-            throw new NotImplementedException();
+            Create(newActivity);
         }
 
         public List<Activity> GetActivities()
         {
-            throw new NotImplementedException();
+            return FindAll().ToList();
         }
 
         public Activity GetActivity(int activityId)
         {
-            throw new NotImplementedException();
+            return FindByCondition(a => a.ActivityId == activityId).FirstOrDefault();
         }
     }
 }

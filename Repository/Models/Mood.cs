@@ -11,14 +11,11 @@ namespace Repository.Models
         [Key]
         public int MoodId { get; set; }
 
+
         public int? MoodRating { get; set; }
-
         public string Note { get; set; }
-
         public DateTime? Date { get; set; }
 
-
-        [ForeignKey("MoodTracker")]
         public int MoodTrackerId { get; set; }
         public MoodTracker MoodTracker { get; set; }
     }

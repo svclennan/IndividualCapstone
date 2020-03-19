@@ -29,7 +29,8 @@ namespace Repository.Migrations
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true),
-                    Genre = table.Column<string>(nullable: true)
+                    Genre = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -82,12 +83,14 @@ namespace Repository.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Moods_MoodTrackerId",
                 table: "Moods",
-                column: "MoodTrackerId");
+                column: "MoodTrackerId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlaylistRatings_MoodTrackerId",
                 table: "PlaylistRatings",
-                column: "MoodTrackerId");
+                column: "MoodTrackerId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
