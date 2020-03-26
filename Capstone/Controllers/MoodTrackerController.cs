@@ -18,6 +18,7 @@ namespace Capstone.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IGoogleCalendarService _calendarService;
         private readonly ISmsService _smsService;
+        Random rand;
 
         public MoodTrackerController(UserManager<IdentityUser> userManager, IDatabaseService databaseService, IGoogleCalendarService calendarService, ISmsService smsService)
         {
@@ -25,6 +26,7 @@ namespace Capstone.Controllers
             _userManager = userManager;
             _calendarService = calendarService;
             _smsService = smsService;
+            rand = new Random();
         }
 
         public async Task<ActionResult> Index()
@@ -75,8 +77,14 @@ namespace Capstone.Controllers
             mood.Date = DateTime.Now;
             _calendarService.AddMood(mood);
             await _databaseService.AddMoodAsync(mood);
-
-            return RedirectToAction(nameof(Index));
+            if(mood.MoodRating < 4)
+            {
+                return RedirectToAction(nameof(RecommendExercise));
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         public ActionResult EnterEvent()
@@ -88,6 +96,16 @@ namespace Capstone.Controllers
         public ActionResult EnterEvent(Activity activity)
         {
             _calendarService.AddActivity(activity);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<ActionResult> RecommendExercise()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var moodTracker = await _databaseService.GetMoodTrackerAsync(userId);
+            var id = rand.Next(1, 9);
+            var activity = await _databaseService.GetActivityAsync(id);
+            await _smsService.SendSMS(moodTracker.PhoneNumber, activity.Name);
             return RedirectToAction(nameof(Index));
         }
 
