@@ -4,8 +4,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-3">
         <h2>Hello, @Model.FirstName</h2>
+    </div>
+    <div class="col-sm-3">
+        <h5>Weekly Average Mood: @ViewBag.Average</h5>
     </div>
     <div class="col-sm-2">
         <a asp-action="EnterEvent">Add Activity To Calendar</a>

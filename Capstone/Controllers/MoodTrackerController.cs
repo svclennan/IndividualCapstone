@@ -18,7 +18,7 @@ namespace Capstone.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IGoogleCalendarService _calendarService;
         private readonly ISmsService _smsService;
-        Random rand;
+        private readonly Random rand;
 
         public MoodTrackerController(UserManager<IdentityUser> userManager, IDatabaseService databaseService, IGoogleCalendarService calendarService, ISmsService smsService)
         {
@@ -32,13 +32,27 @@ namespace Capstone.Controllers
         public async Task<ActionResult> Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if(await _databaseService.GetMoodTrackerAsync(userId) == null)
+            var moodTracker = await _databaseService.GetMoodTrackerAsync(userId);
+            var events = _calendarService.GetEvents();
+            var sum = 0.0;
+            var count = 0;
+            foreach(var eventItem in events.Items)
+            {
+                if(eventItem.Description != "Activity" && eventItem.Start.Date.CompareTo(DateTime.Now.Date.AddDays(-7)) > 0)
+                {
+                    sum += Convert.ToDouble(eventItem.Summary);
+                    count++;
+                }
+            }
+            var average = sum / count;
+            ViewBag.Average = average;
+
+            if (moodTracker == null)
             {
                 return RedirectToAction(nameof(Create));
             }
             else
             {
-                var moodTracker = await _databaseService.GetMoodTrackerAsync(userId);
                 return View(moodTracker);
             }
         }
@@ -83,7 +97,7 @@ namespace Capstone.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(RecommendMusic));
             }
         }
 
@@ -106,7 +120,7 @@ namespace Capstone.Controllers
             var id = rand.Next(1, 9);
             var activity = await _databaseService.GetActivityAsync(id);
             await _smsService.SendSMS(moodTracker.PhoneNumber, activity.Name);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(RecommendMusic));
         }
 
         public async Task<ActionResult> SendNotification()
@@ -134,6 +148,12 @@ namespace Capstone.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var moodTracker = await _databaseService.GetMoodTrackerAsync(userId);
             await _smsService.SendSMS(moodTracker.PhoneNumber, "Remember to enter your mood today!");
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<ActionResult> RecommendMusic()
+        {
+
             return RedirectToAction(nameof(Index));
         }
     }
