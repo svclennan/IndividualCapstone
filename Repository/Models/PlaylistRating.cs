@@ -16,6 +16,5 @@ namespace Repository.Models
         public bool Rating { get; set; }
 
         public int MoodTrackerId { get; set; }
-        public MoodTracker MoodTracker { get; set; }
     }
 }

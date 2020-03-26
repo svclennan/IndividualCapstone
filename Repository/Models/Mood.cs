@@ -17,6 +17,5 @@ namespace Repository.Models
         public DateTime? Date { get; set; }
 
         public int MoodTrackerId { get; set; }
-        public MoodTracker MoodTracker { get; set; }
     }
 }

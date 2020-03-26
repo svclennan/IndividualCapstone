@@ -33,11 +33,15 @@ namespace Capstone
         {
             services.AddScoped<IDatabaseService, DatabaseService>();
 
+            services.AddScoped<IGoogleCalendarService, GoogleCalendarService>();
+
+            services.AddScoped<ISmsService, SmsService>();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<ClaimsPrincipal>(s =>

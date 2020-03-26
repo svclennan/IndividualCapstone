@@ -18,7 +18,5 @@ namespace Repository.Models
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
-        public virtual Mood Mood { get; set; }
-        public virtual PlaylistRating PlaylistRating { get; set; }
     }
 }

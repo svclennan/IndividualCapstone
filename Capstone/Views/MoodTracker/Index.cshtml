@@ -1,8 +1,29 @@
-﻿
+﻿@model Capstone.Models.MoodTracker
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h1>Index</h1>
-
+<div class="row">
+    <div class="col-sm-6">
+        <h2>Hello, @Model.FirstName</h2>
+    </div>
+    <div class="col-sm-2">
+        <a asp-action="EnterEvent">Add Activity To Calendar</a>
+    </div>
+    <div class="col-sm-2">
+        <a asp-action="SendNotification">Send Activity Notification</a>
+    </div>
+    <div class="col-sm-2">
+        <a asp-action="EnterMood">Enter Mood</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FChicago&amp;src=b2xlaDdyNjFlMzZmNHFvZ2RidmJ1bmxmb2tAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;color=%23009688&amp;showTabs=1&amp;showPrint=0&amp;showDate=1&amp;showNav=1&amp;showTitle=0&amp;showCalendars=0&amp;showTz=0&amp;title=Mood%20Tracker" style="border-width:0" width="100%" height="800" frameborder="0" scrolling="no"></iframe>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <a asp-action="DailyReminder">Daily Mood Reminder</a>
+    </div>
+</div>

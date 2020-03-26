@@ -22,18 +22,18 @@ namespace Repository.Data
 
         public MoodTracker GetMoodTracker(int moodTrackerId)
         {
-            return FindByCondition(a => a.MoodTrackerId == moodTrackerId).Include(a=> a.Mood).Include(a=> a.PlaylistRating).FirstOrDefault();
+            return FindByCondition(a => a.MoodTrackerId == moodTrackerId).FirstOrDefault();
         }
 
         public MoodTracker GetMoodTrackerByUserId(string userId)
         {
-            return FindByCondition(a => a.UserId == userId).Include(a => a.Mood).Include(a => a.PlaylistRating).FirstOrDefault();
+            return FindByCondition(a => a.UserId == userId).FirstOrDefault();
         }
 
         //include all things
         public List<MoodTracker> GetMoodTrackers()
         {
-            return FindAll().Include(a => a.Mood).Include(a => a.PlaylistRating).ToList();
+            return FindAll().ToList();
         }
     }
 }

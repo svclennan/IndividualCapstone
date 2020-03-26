@@ -14,9 +14,8 @@ namespace Capstone.Models
 
         public int? MoodRating { get; set; }
         public string Note { get; set; }
-        public DateTime? Date { get; set; }
+        public DateTime Date { get; set; }
 
         public int MoodTrackerId { get; set; }
-        public MoodTracker MoodTracker { get; set; }
     }
 }

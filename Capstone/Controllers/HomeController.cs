@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Capstone.Models;
+using System.Security.Claims;
 
 namespace Capstone.Controllers
 {
@@ -20,6 +21,18 @@ namespace Capstone.Controllers
 
         public IActionResult Index()
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId != null)
+            {
+                try
+                {
+                    return RedirectToAction("Index", "MoodTracker");
+                }
+                catch
+                {
+                    return View();
+                }
+            }
             return View();
         }
 
