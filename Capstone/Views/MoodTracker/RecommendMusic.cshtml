@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Capstone.Models.NumberRating
+@{
     ViewData["Title"] = "Recommend Music";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -8,7 +9,10 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <h3>You should listen to @ViewBag.playlistUrl</h3>
+        <div class="row">
+            <h3>You should listen to: </h3>
+            <a href="@ViewBag.playlistUrl">@ViewBag.playlistUrl</a>
+        </div>
     </div>
 </div>
 <div class="row">
@@ -16,9 +20,9 @@
         <form asp-action="RecommendMusic">
             <div id="music_rating" class="form-group">
                 <label for="rating" class="control-label">How would you rate this playlist? (0-10)</label>
-                <input class="form-control" type="number" min="0" max="10" />
+                <input asp-for="@Model.Rating" class="form-control" type="number" min="0" max="10" />
                 <label for="url" class="control-label" style="visibility:hidden"></label>
-                <input class="form-control" style="visibility:hidden" value="@ViewBag.playlistUrl" />
+                <input asp-for="@Model.Url" class="form-control" style="visibility:hidden" value="@ViewBag.playlistUrl" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Submit" class="btn btn-primary" />

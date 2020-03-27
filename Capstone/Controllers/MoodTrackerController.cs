@@ -51,7 +51,12 @@ namespace Capstone.Controllers
             }
             var average = sum / count;
             ViewBag.Average = average;
-
+            if (count > 0 && average < 5)
+            {
+                var id = rand.Next(1, 9);
+                var activity = await _databaseService.GetActivityAsync(id);
+                await _smsService.SendSMS(moodTracker.PhoneNumber, activity.Name);
+            }
             if (moodTracker == null)
             {
                 return RedirectToAction(nameof(Create));
@@ -164,15 +169,16 @@ namespace Capstone.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> RecommendMusic(string url, int rating)
+        public async Task<ActionResult> RecommendMusic(NumberRating numberRating)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var moodTracker = await _databaseService.GetMoodTrackerAsync(userId);
             var playlistRating = new PlaylistRating
             {
-                PlaylistUrl = url
+                PlaylistUrl = numberRating.Url,
+                MoodTrackerId = moodTracker.MoodTrackerId
             };
-            if (rating >= 5)
+            if (numberRating.Rating >= 5)
             {
                 playlistRating.Rating = true;
             }
@@ -180,7 +186,6 @@ namespace Capstone.Controllers
             {
                 playlistRating.Rating = false;
             }
-            playlistRating.MoodTrackerId = moodTracker.MoodTrackerId;
             await _databaseService.AddPlaylistRatingAsync(playlistRating);
             return RedirectToAction(nameof(Index));
         }
