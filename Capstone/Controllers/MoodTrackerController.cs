@@ -19,29 +19,34 @@ namespace Capstone.Controllers
         private readonly IGoogleCalendarService _calendarService;
         private readonly ISmsService _smsService;
         private readonly Random rand;
+        private readonly IMusicService _musicService;
 
-        public MoodTrackerController(UserManager<IdentityUser> userManager, IDatabaseService databaseService, IGoogleCalendarService calendarService, ISmsService smsService)
+        public MoodTrackerController(UserManager<IdentityUser> userManager, IDatabaseService databaseService, IGoogleCalendarService calendarService, ISmsService smsService, IMusicService musicService)
         {
             _databaseService = databaseService;
             _userManager = userManager;
             _calendarService = calendarService;
             _smsService = smsService;
             rand = new Random();
+            _musicService = musicService;
         }
 
         public async Task<ActionResult> Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var moodTracker = await _databaseService.GetMoodTrackerAsync(userId);
-            var events = _calendarService.GetEvents();
+            var events = _calendarService.GetMoods();
             var sum = 0.0;
             var count = 0;
-            foreach(var eventItem in events.Items)
+            if(events != null)
             {
-                if(eventItem.Description != "Activity" && eventItem.Start.Date.CompareTo(DateTime.Now.Date.AddDays(-7)) > 0)
+                foreach (var eventItem in events.Items)
                 {
-                    sum += Convert.ToDouble(eventItem.Summary);
-                    count++;
+                    if (eventItem.Description != "Activity")
+                    {
+                        sum += Convert.ToDouble(eventItem.Summary);
+                        count++;
+                    }
                 }
             }
             var average = sum / count;
@@ -153,7 +158,30 @@ namespace Capstone.Controllers
 
         public async Task<ActionResult> RecommendMusic()
         {
-
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var moodTracker = await _databaseService.GetMoodTrackerAsync(userId);
+            ViewBag.playlistUrl = _musicService.GetPlaylistRecommendation(moodTracker.Genre);
+            return View();
+        }
+        [HttpPost]
+        public async Task<ActionResult> RecommendMusic(string url, int rating)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var moodTracker = await _databaseService.GetMoodTrackerAsync(userId);
+            var playlistRating = new PlaylistRating
+            {
+                PlaylistUrl = url
+            };
+            if (rating >= 5)
+            {
+                playlistRating.Rating = true;
+            }
+            else
+            {
+                playlistRating.Rating = false;
+            }
+            playlistRating.MoodTrackerId = moodTracker.MoodTrackerId;
+            await _databaseService.AddPlaylistRatingAsync(playlistRating);
             return RedirectToAction(nameof(Index));
         }
     }

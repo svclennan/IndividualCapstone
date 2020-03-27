@@ -12,5 +12,6 @@ namespace Capstone.Contracts
         void AddMood(Mood mood);
         void AddActivity(Activity activity);
         Events GetEvents();
+        public Events GetMoods();
     }
 }

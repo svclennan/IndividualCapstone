@@ -37,6 +37,8 @@ namespace Capstone
 
             services.AddScoped<ISmsService, SmsService>();
 
+            services.AddScoped<IMusicService, MusicService>();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));

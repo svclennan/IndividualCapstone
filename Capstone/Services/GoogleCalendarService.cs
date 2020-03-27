@@ -134,5 +134,45 @@ namespace Capstone.Services
                 return null;
             }
         }
+
+        public Events GetMoods()
+        {
+            UserCredential credential;
+
+            using (var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+            {
+                string credPath = "token.json";
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+                Console.WriteLine("Credential file saved to: " + credPath);
+            }
+
+            var service = new CalendarService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
+
+            EventsResource.ListRequest request = service.Events.List("oleh7r61e36f4qogdbvbunlfok@group.calendar.google.com");
+            request.TimeMin = DateTime.Now.AddDays(-7);
+            request.ShowDeleted = false;
+            request.SingleEvents = true;
+            request.TimeMax = DateTime.Now.AddHours(2);
+            request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+
+            Events events = request.Execute();
+            if (events.Items != null && events.Items.Count > 0)
+            {
+                return events;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }
