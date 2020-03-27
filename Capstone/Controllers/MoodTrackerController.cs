@@ -165,7 +165,9 @@ namespace Capstone.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var moodTracker = await _databaseService.GetMoodTrackerAsync(userId);
-            ViewBag.playlistUrl = _musicService.GetPlaylistRecommendation(moodTracker.Genre);
+            var playlistNumber = rand.Next(0, 10);
+            var playlists = _musicService.GetPlaylistRecommendation(moodTracker.Genre);
+            ViewBag.playlistUrl = playlists[playlistNumber]["external_urls"]["spotify"].ToString();
             return View();
         }
         [HttpPost]

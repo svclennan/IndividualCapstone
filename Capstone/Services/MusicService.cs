@@ -13,7 +13,7 @@ namespace Capstone.Services
 {
     public class MusicService : IMusicService
     {
-        public string GetPlaylistRecommendation(string genre)
+        public JToken GetPlaylistRecommendation(string genre)
         {
             var authClient = new RestClient("https://accounts.spotify.com/api/token");
             authClient.Timeout = -1;
@@ -42,13 +42,13 @@ namespace Capstone.Services
             {
                 return "Invalid API Call";
             }*/
-            var client = new RestClient("https://api.spotify.com/v1/browse/categories/rock/playlists?country=US&limit=1");
+            var client = new RestClient($"https://api.spotify.com/v1/browse/categories/{genre.ToLower()}/playlists?country=US&limit=10");
             client.Timeout = -1;
             var request = new RestRequest(Method.GET);
             request.AddHeader("Authorization", $"Bearer {token}");
             IRestResponse response = client.Execute(request);
             var jsonString = response.Content;
-            var playlistUrl = JObject.Parse(jsonString)["playlists"]["items"][0]["external_urls"]["spotify"].ToString();
+            var playlistUrl = JObject.Parse(jsonString)["playlists"]["items"];
             return playlistUrl;
 
         }
